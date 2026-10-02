@@ -81,9 +81,9 @@ Potvrzení se přijímá jen v okně ±200 ms kolem doby 1. Timing se počítá 
 | doby 1–4 | předčasná příprava: figura je „prozrazená“ moc brzy, partnerka zpomalí, maximálně Good |
 | doby 5–7 | správná příprava |
 | doba 8 | uspěchaná příprava: figura proběhne, ale maximálně za Good |
+| bez výběru | potvrzení nejde provést (není co potvrdit) |
 
 Rozhoduje doba posledního výběru (změny) karty.
-| bez výběru | potvrzení nejde provést (není co potvrdit) |
 
 ### 4.3 Logika a partnerka
 | Situace | Důsledek |
