@@ -15,7 +15,10 @@ extends Resource
 @export var uvod_vyber_od := 12
 
 @export_group("Energie")
-@export var energie_regenerace := 10
+## Základní krok doplní energii.
+@export var energie_regenerace := 15
+## Každý cyklus po úvodu doplní energii, ať se tancuje cokoli.
+@export var energie_pasivni := 3
 
 @export_group("Pohoda")
 @export var pohoda_start := 70.0

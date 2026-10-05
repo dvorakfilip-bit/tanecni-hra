@@ -98,12 +98,16 @@ func zahod(i: int, t: float, predchozi_vyber: Array) -> bool:
 	return ok
 
 
-## Uzavře cykly, jejichž okno potvrzení už skončilo (bez potvrzení = základní krok).
+## Uzavře cykly, jejichž okno potvrzení už skončilo (bez potvrzení = základní krok),
+## a přičte pasivní regeneraci energie.
 func update(t: float) -> void:
 	while _dalsi_cyklus < pocet_cyklu \
 			and t > cas_doby(_dalsi_cyklus * DOB_V_CYKLU) + b.miss_ms / 1000.0:
 		if not _vyreseno.has(_dalsi_cyklus):
 			_zakladni(_dalsi_cyklus)
+		if _dalsi_cyklus >= prvni_cyklus:
+			stav.zmen_energii(b.energie_pasivni)
+			zmena.emit()
 		_dalsi_cyklus += 1
 
 

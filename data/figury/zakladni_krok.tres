@@ -9,5 +9,5 @@ nazev = "Základní krok"
 vstup = Array[StringName]([])
 vystup = &""
 obtiznost = 1
-narocnost_energie = -10
+narocnost_energie = -15
 typ = &"zaklad"

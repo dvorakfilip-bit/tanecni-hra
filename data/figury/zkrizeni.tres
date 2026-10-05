@@ -9,5 +9,5 @@ nazev = "Zkřížení"
 vstup = Array[StringName]([&"otevrene"])
 vystup = &"zkrizene"
 obtiznost = 2
-narocnost_energie = 10
+narocnost_energie = 5
 typ = &"prechod"

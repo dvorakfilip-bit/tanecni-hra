@@ -14,6 +14,7 @@ func _ready() -> void:
 	test_spatne_drzeni()
 	test_predcasna_priprava()
 	test_necinnost()
+	test_energie()
 	test_uvod_a_ignorovani()
 	test_akcent_a_fraze()
 	test_zahozeni()
@@ -75,7 +76,7 @@ func test_perfect_a_prechod() -> void:
 	_ocekavej("perfect držení", g.stav.drzeni, &"otevrene")
 	_ocekavej("perfect combo", g.skore.combo, 1)
 	_ocekavej("perfect pohoda", g.stav.pohoda, 75.0)
-	_ocekavej("perfect energie", g.stav.energie, 95)
+	_ocekavej("perfect energie (otevření je zdarma)", g.stav.energie, 100)
 	_ocekavej("perfect výběr zrušen", g.ruka.vybrana, -1)
 
 
@@ -127,6 +128,17 @@ func test_necinnost() -> void:
 	g.update(_cas(8 * 5) + 0.3)  # uzavře cykly 0–5, z toho 2–5 po úvodu
 	_ocekavej("nečinnost kroky", nudy, [false, false, true, true])
 	_ocekavej("nečinnost pohoda", g.stav.pohoda, 64.0)
+
+
+func test_energie() -> void:
+	var g := _hra()
+	_karta(g, 0, &"dip")
+	_zahraj(g, 0, 13, 2, 0.0)
+	_ocekavej("energie po dipu", g.stav.energie, 80)
+	g.update(_cas(16) + 0.3)  # uzavře cyklus 2: pasivní +3
+	_ocekavej("pasivní regenerace", g.stav.energie, 83)
+	g.update(_cas(24) + 0.3)  # cyklus 3 bez figury: základní krok +15, pasivní +3
+	_ocekavej("základní krok + pasivní", g.stav.energie, 100)
 
 
 func test_uvod_a_ignorovani() -> void:

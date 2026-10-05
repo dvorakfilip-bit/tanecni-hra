@@ -207,7 +207,7 @@ func _obnov() -> void:
 	_dancer.drzeni = s.drzeni
 	for i in _karty.size():
 		var f := game.ruka.karty[i]
-		_karty[i].nastav(f, game.ruka.vybrana == i, f.jde_z(s.drzeni))
+		_karty[i].nastav(f, game.ruka.vybrana == i, f.jde_z(s.drzeni), s.energie < f.narocnost_energie)
 
 
 func _ukaz(text: String, barva: Color) -> void:
