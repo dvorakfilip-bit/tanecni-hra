@@ -30,31 +30,17 @@ func _ready() -> void:
 	metronome.conductor = conductor
 	add_child(metronome)
 	_build_ui()
-	_info.text = "%s – %s\n%d BPM · offset %d ms · délka %d s" % [
+	_info.text = "%s – %s\n%s BPM · offset %d ms · délka %d s" % [
 			song.nazev, song.interpret, song.bpm, song.offset_ms, conductor.get_length()]
 
 
 func _build_ui() -> void:
-	var bg := ColorRect.new()
-	bg.color = Color(0.1, 0.1, 0.12)
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(bg)
+	var box := UiKit.screen(self, 32, 24)
 
-	var margin := MarginContainer.new()
-	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
-	for side in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 32)
-	add_child(margin)
-
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 24)
-	margin.add_child(box)
-
-	_info = _label(26)
+	_info = UiKit.label("", 26)
 	box.add_child(_info)
 
-	_beat_label = _label(42)
-	_beat_label.text = "—"
+	_beat_label = UiKit.label("—", 42)
 	box.add_child(_beat_label)
 
 	_timeline = TimelineView.new()
@@ -66,44 +52,25 @@ func _build_ui() -> void:
 	_tap_zone.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_tap_zone.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	box.add_child(_tap_zone)
-	_tap_result = _label(44)
-	_tap_result.text = "Ťukej sem do rytmu"
+	_tap_result = UiKit.label("Ťukej sem do rytmu", 44)
 	_tap_result.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_tap_result.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_tap_zone.add_child(_tap_result)
 
-	_stats = _label(26)
+	_stats = UiKit.label("", 26)
 	box.add_child(_stats)
 
-	var buttons := HBoxContainer.new()
-	buttons.add_theme_constant_override("separation", 16)
-	box.add_child(buttons)
-	_play_button = _button("Hrát", buttons)
+	var buttons := UiKit.row(box, 16)
+	UiKit.button("Zpět", buttons, 32, 96).pressed.connect(
+			func() -> void: get_tree().change_scene_to_file("res://scenes/dev_menu.tscn"))
+	_play_button = UiKit.button("Hrát", buttons, 32, 96)
 	_play_button.pressed.connect(_on_play_pressed)
-	var metro := _button("Metronom: zap", buttons)
+	var metro := UiKit.button("Metronom: zap", buttons, 32, 96)
 	metro.toggle_mode = true
 	metro.button_pressed = true
 	metro.toggled.connect(func(on: bool) -> void:
 		metronome.enabled = on
 		metro.text = "Metronom: " + ("zap" if on else "vyp"))
-
-
-func _label(font_size: int) -> Label:
-	var l := Label.new()
-	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	l.add_theme_font_size_override("font_size", font_size)
-	return l
-
-
-func _button(text: String, parent: Control) -> Button:
-	var b := Button.new()
-	b.text = text
-	b.custom_minimum_size = Vector2(0, 96)
-	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	b.add_theme_font_size_override("font_size", 32)
-	parent.add_child(b)
-	return b
 
 
 func _on_play_pressed() -> void:

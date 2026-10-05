@@ -34,3 +34,19 @@ static func from_dict(d: Dictionary) -> SongData:
 	for a in d.get("akcenty", []):
 		s.akcenty.append({ "doba": int(a.get("doba", 0)), "typ": String(a.get("typ", "")) })
 	return s
+
+
+func to_dict() -> Dictionary:
+	var akc := []
+	for a in akcenty:
+		akc.append({ "doba": a.doba, "typ": a.typ })
+	return {
+		"nazev": nazev,
+		"interpret": interpret,
+		"styl": String(styl),
+		"soubor": soubor,
+		"bpm": int(bpm) if is_equal_approx(bpm, roundf(bpm)) else snappedf(bpm, 0.01),
+		"offset_ms": roundi(offset_ms),
+		"delka_frazi_dob": delka_frazi_dob,
+		"akcenty": akc,
+	}

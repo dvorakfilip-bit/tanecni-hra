@@ -24,6 +24,12 @@ func reset() -> void:
 	_last_click = -1
 
 
+## Po skoku v čase nebo změně BPM / offsetu: neklikat za doby, které jen přeskočily.
+func resync() -> void:
+	if conductor:
+		_last_click = floori(conductor.beat_position_at(conductor.get_mix_time()))
+
+
 func _process(_delta: float) -> void:
 	if not conductor or not conductor.is_playing():
 		return

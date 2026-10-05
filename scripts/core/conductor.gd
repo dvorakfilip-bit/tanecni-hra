@@ -32,12 +32,36 @@ func play(from_s := 0.0) -> void:
 	# get_output_latency() je drahé volání, stačí ho zjistit jednou při startu
 	_output_latency = AudioServer.get_output_latency()
 	_last_time = from_s
-	_last_beat = maxi(ceili(beat_position_at(from_s)) - 1, -1)
+	# od začátku souboru poslat i dobu 0, i když je offset mírně záporný
+	if from_s <= 0.0:
+		_last_beat = -1
+	else:
+		_last_beat = maxi(ceili(beat_position_at(from_s)) - 1, -1)
 	_player.play(from_s)
 
 
 func stop() -> void:
 	_player.stop()
+
+
+## Zastaví a zapamatuje si pozici, play(get_song_time()) pak pokračuje.
+func pause() -> void:
+	_last_time = get_song_time()
+	_player.stop()
+
+
+func seek(t: float) -> void:
+	t = clampf(t, 0.0, get_length())
+	if _player.playing:
+		play(t)
+	else:
+		_last_time = t
+
+
+## Přepočítá poslední dobu po změně BPM nebo offsetu, aby se neposílaly
+## signály za doby, které se jen posunuly.
+func resync() -> void:
+	_last_beat = maxi(floori(get_beat_position()), -1)
 
 
 func is_playing() -> bool:

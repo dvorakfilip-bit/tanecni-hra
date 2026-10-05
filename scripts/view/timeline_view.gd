@@ -23,7 +23,7 @@ func _process(_delta: float) -> void:
 func _draw() -> void:
 	var w := size.x / 8.0
 	var pos := -1.0
-	if conductor and conductor.is_playing():
+	if conductor and conductor.song:
 		pos = conductor.get_beat_position()
 	var in_cycle := fposmod(pos, 8.0) if pos >= 0.0 else -1.0
 	var font := get_theme_default_font()

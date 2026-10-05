@@ -15,3 +15,11 @@ static func load_song(path: String) -> SongData:
 		push_error("SongDb: neplatný JSON v %s" % path)
 		return null
 	return SongData.from_dict(d)
+
+
+static func save_song(s: SongData, path: String) -> Error:
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	if f == null:
+		return FileAccess.get_open_error()
+	f.store_string(JSON.stringify(s.to_dict(), "  ", false) + "\n")
+	return OK

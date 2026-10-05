@@ -4,7 +4,40 @@
   "styl": "bachata",
   "soubor": "res://songs/incienso.mp3",
   "bpm": 130,
-  "offset_ms": 0,
+  "offset_ms": -11,
   "delka_frazi_dob": 32,
-  "akcenty": []
+  "akcenty": [
+    {
+      "doba": 96,
+      "typ": "break"
+    },
+    {
+      "doba": 128,
+      "typ": "break"
+    },
+    {
+      "doba": 192,
+      "typ": "break"
+    },
+    {
+      "doba": 224,
+      "typ": "break"
+    },
+    {
+      "doba": 256,
+      "typ": "break"
+    },
+    {
+      "doba": 288,
+      "typ": "break"
+    },
+    {
+      "doba": 352,
+      "typ": "break"
+    },
+    {
+      "doba": 448,
+      "typ": "break"
+    }
+  ]
 }
