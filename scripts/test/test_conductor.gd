@@ -108,8 +108,8 @@ func _input(event: InputEvent) -> void:
 		tapped = event.keycode == KEY_SPACE
 	if not tapped or not conductor.is_playing():
 		return
-	# čas odečíst hned při zpracování vstupu
-	var t := conductor.get_song_time()
+	# čas odečíst hned při zpracování vstupu, s kalibrovanou korekcí
+	var t := conductor.get_input_time()
 	var pos := conductor.beat_position_at(t)
 	var nearest := roundi(pos)
 	var dev_ms := (t - conductor.time_of_beat(nearest)) * 1000.0
@@ -126,5 +126,6 @@ func _show_tap(dev_ms: float) -> void:
 	var sum := 0.0
 	for d in _devs:
 		sum += d
-	_stats.text = "průměr posledních %d ťuknutí: %+d ms\n(+ = pozdě, − = brzy) · latence výstupu %d ms" % [
-			_devs.size(), roundi(sum / _devs.size()), roundi(conductor.get_output_latency() * 1000.0)]
+	_stats.text = "průměr posledních %d ťuknutí: %+d ms\n(+ = pozdě, − = brzy) · korekce %+d ms · latence výstupu %d ms" % [
+			_devs.size(), roundi(sum / _devs.size()), roundi(conductor.input_latency * 1000.0),
+			roundi(conductor.get_output_latency() * 1000.0)]

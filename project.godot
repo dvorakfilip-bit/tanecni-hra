@@ -14,6 +14,10 @@ config/name="Taneční hra"
 run/main_scene="res://scenes/dev_menu.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
+[autoload]
+
+SaveManager="*res://scripts/core/save_manager.gd"
+
 [display]
 
 window/size/viewport_width=720

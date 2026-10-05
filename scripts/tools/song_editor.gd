@@ -249,7 +249,7 @@ func _input(event: InputEvent) -> void:
 func _tap() -> void:
 	if not conductor.is_playing():
 		return
-	_taps.append(conductor.get_song_time())
+	_taps.append(conductor.get_input_time())
 	_refresh_taps()
 
 

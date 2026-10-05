@@ -10,6 +10,8 @@ signal finished
 const DOB_V_CYKLU := 8
 
 var song: SongData
+## Kalibrovaná latence vstupu (dotyk + nenahlášená latence audia), viz get_input_time().
+var input_latency := 0.0
 
 var _player: AudioStreamPlayer
 var _output_latency := 0.0
@@ -21,11 +23,13 @@ func _ready() -> void:
 	_player = AudioStreamPlayer.new()
 	add_child(_player)
 	_player.finished.connect(func() -> void: finished.emit())
+	input_latency = SaveManager.latency_s()
 
 
-func load_song(s: SongData) -> void:
+## stream = vlastní audio místo souboru z dat písně (kalibrace).
+func load_song(s: SongData, stream: AudioStream = null) -> void:
 	song = s
-	_player.stream = load(s.soubor)
+	_player.stream = stream if stream else load(s.soubor)
 
 
 func play(from_s := 0.0) -> void:
@@ -82,6 +86,11 @@ func get_song_time() -> float:
 		t = _last_time
 	_last_time = t
 	return t
+
+
+## Čas ťuknutí hráče: slyšený čas minus kalibrovaná latence vstupu.
+func get_input_time() -> float:
+	return get_song_time() - input_latency
 
 
 ## Čas, který se právě mixuje (bez odečtení latence výstupu).
