@@ -1,10 +1,9 @@
 extends Node
-## Autoload SaveManager: nastavení a kalibrace v user:// (PRD 9.4).
-## Skóre písní přibude s obrazovkou výsledků.
-
+## Autoload SaveManager: nastavení, kalibrace a nejlepší skóre v user:// (PRD 9.4).
 signal settings_changed
 
 const SETTINGS_PATH := "user://settings.cfg"
+const SCORES_PATH := "user://scores.cfg"
 const SECTION := "nastaveni"
 const DEFAULTS := {
 	"hlasitost_hudby": 1.0,
@@ -44,3 +43,24 @@ func set_setting(key: String, value: Variant) -> void:
 
 func latency_s() -> float:
 	return float(_settings.latence_ms) / 1000.0
+
+
+## Nejlepší výsledek písně: { "skore": int, "hvezdy": int }.
+func nejlepsi(pisen: String) -> Dictionary:
+	var cfg := ConfigFile.new()
+	cfg.load(SCORES_PATH)
+	return { "skore": cfg.get_value(pisen, "skore", 0), "hvezdy": cfg.get_value(pisen, "hvezdy", 0) }
+
+
+## Uloží výsledek, pokud je lepší. Vrací true při novém rekordu skóre.
+func uloz_vysledek(pisen: String, skore: int, hvezdy: int) -> bool:
+	var cfg := ConfigFile.new()
+	cfg.load(SCORES_PATH)
+	var rekord := skore > int(cfg.get_value(pisen, "skore", 0))
+	if rekord:
+		cfg.set_value(pisen, "skore", skore)
+	cfg.set_value(pisen, "hvezdy", maxi(hvezdy, int(cfg.get_value(pisen, "hvezdy", 0))))
+	var err := cfg.save(SCORES_PATH)
+	if err != OK:
+		push_error("SaveManager: skóre nejde uložit (%s)" % error_string(err))
+	return rekord

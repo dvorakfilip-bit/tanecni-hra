@@ -1,6 +1,8 @@
 class_name TimelineView
 extends Control
 ## Časová osa jednoho cyklu 1-2-3-tap-5-6-7-tap (PRD 6.1).
+## Začátek fráze = zlatý pruh nad dobou 1, cyklus s akcentem = oranžový rámeček
+## a značka na přesné době akcentu.
 
 const LABELS := ["1", "2", "3", "tap", "5", "6", "7", "tap"]
 const GAP := 6.0
@@ -12,6 +14,9 @@ const C_TAP := Color(0.16, 0.16, 0.19)
 const C_TEXT := Color(0.92, 0.92, 0.95)
 const C_TEXT_DIM := Color(0.55, 0.55, 0.6)
 const C_CURSOR := Color(1, 1, 1)
+const C_FRAZE := Color(1.0, 0.8, 0.3)
+const C_AKCENT := Color(1.0, 0.55, 0.15)
+const ZNACKA := 10.0
 
 var conductor: Conductor
 
@@ -26,6 +31,7 @@ func _draw() -> void:
 	if conductor and conductor.song:
 		pos = conductor.get_beat_position()
 	var in_cycle := fposmod(pos, 8.0) if pos >= 0.0 else -1.0
+	var cyklus := floori(pos / 8.0)
 	var font := get_theme_default_font()
 	var font_size := int(size.y * 0.32)
 
@@ -46,6 +52,17 @@ func _draw() -> void:
 		var baseline := rect.position.y + (rect.size.y + fs * 0.7) / 2
 		draw_string(font, Vector2(rect.position.x, baseline), LABELS[i],
 				HORIZONTAL_ALIGNMENT_CENTER, rect.size.x, fs, tc)
+
+	if pos >= 0.0:
+		if (cyklus * 8) % conductor.song.delka_frazi_dob == 0:
+			draw_rect(Rect2(GAP / 2, -ZNACKA, w - GAP, ZNACKA - 2), C_FRAZE)
+		for a in conductor.song.akcenty:
+			if a.doba / 8 == cyklus:
+				draw_rect(Rect2(0, 0, size.x, size.y), C_AKCENT, false, 4.0)
+				var ax: float = (a.doba % 8 + 0.5) * w
+				draw_colored_polygon(PackedVector2Array([
+						Vector2(ax - ZNACKA, size.y + ZNACKA + 4), Vector2(ax + ZNACKA, size.y + ZNACKA + 4),
+						Vector2(ax, size.y + 2)]), C_AKCENT)
 
 	if in_cycle >= 0.0:
 		var x := in_cycle * w

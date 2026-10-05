@@ -2,6 +2,7 @@ extends Control
 ## Dočasné vývojářské menu, později ho nahradí hlavní menu hry.
 
 const SCENES := [
+	["Hrát", "res://scenes/game.tscn"],
 	["Editor písně", "res://scenes/song_editor.tscn"],
 	["Kalibrace", "res://scenes/calibration.tscn"],
 	["Test timingu", "res://scenes/test_conductor.tscn"],
