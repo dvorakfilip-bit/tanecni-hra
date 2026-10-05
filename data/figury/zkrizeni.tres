@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Figura" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/figura.gd" id="1_fig"]
+
+[resource]
+script = ExtResource("1_fig")
+id = &"zkrizeni"
+nazev = "Zkřížení"
+vstup = Array[StringName]([&"otevrene"])
+vystup = &"zkrizene"
+obtiznost = 2
+narocnost_energie = 10
+typ = &"prechod"

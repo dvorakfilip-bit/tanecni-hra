@@ -1,0 +1,10 @@
+{
+  "nazev": "Incienso (2.0)",
+  "interpret": "Montelier",
+  "styl": "bachata",
+  "soubor": "res://songs/incienso.mp3",
+  "bpm": 130,
+  "offset_ms": 0,
+  "delka_frazi_dob": 32,
+  "akcenty": []
+}

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Partnerka" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/partnerka.gd" id="1_par"]
+
+[resource]
+script = ExtResource("1_par")
+id = &"mvp"
+nazev = "Partnerka"
+uroven = 3
+energie_max = 100
+oblibeny_typ = &"styling"

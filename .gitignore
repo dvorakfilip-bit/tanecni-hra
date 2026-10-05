@@ -1,2 +1,10 @@
 # Hudba (licence) – do veřejného repa nepatří
 *.mp3
+
+# Godot
+.godot/
+/android/
+
+# Buildy
+*.apk
+*.aab
